@@ -71,7 +71,7 @@ export function PayWithSolana() {
       <Button
         onClick={pay}
         disabled={loading}
-        className="w-full"
+        className="w-full cursor-pointer"
       >
         {loading ? "Processing…" : "Send 0.1 SOL"}
       </Button>

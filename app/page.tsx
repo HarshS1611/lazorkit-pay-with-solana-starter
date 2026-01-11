@@ -1,25 +1,26 @@
+"use client";
+
 import { ConnectButton } from "@/components/ConnectButton";
-import { PayWithSolana } from "@/components/PayWithSolana";
+import { WalletTabs } from "@/components/WalletTabs";
+import { useWallet } from "@lazorkit/wallet";
 
 export default function Home() {
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-4">
       <header className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">
-          Pay with Solana (No Wallet)
-        </h1>
+        <h1 className="text-3xl font-bold">Lazorkit Wallet Example</h1>
         <p className="text-muted-foreground max-w-md">
-          This example shows how Lazorkit enables passkey-based
-          smart wallets and gasless transactions on Solana.
+          A minimal wallet-style interface demonstrating passkey-based smart
+          wallets and gasless transactions.
         </p>
       </header>
 
       <ConnectButton />
-      <PayWithSolana />
-
-      <footer className="text-xs text-muted-foreground text-center">
-        Devnet demo • Powered by Lazorkit
-      </footer>
+      <WalletTabs />
+      <p className="text-xs text-muted-foreground text-center">
+        Devnet demo · Powered By Lazorkit Wallet
+      </p>
     </main>
   );
 }

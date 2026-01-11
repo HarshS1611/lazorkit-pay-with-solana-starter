@@ -53,7 +53,7 @@ export function ConnectButton() {
         <div className="flex items-center justify-between rounded-md border px-3 py-2 text-sm font-mono">
           {wallet.smartWallet.slice(0, 6)}…
           {wallet.smartWallet.slice(-4)}
-          <button onClick={copyAddress}>
+          <button className="cursor-pointer" onClick={copyAddress}>
             <Copy className="h-4 w-4" />
           </button>
         </div>
@@ -61,7 +61,7 @@ export function ConnectButton() {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full cursor-pointer"
             onClick={handleDisconnect}
           >
             <LogOut className="mr-2 h-4 w-4" />
@@ -84,7 +84,7 @@ export function ConnectButton() {
       <Button
         onClick={handleConnect}
         disabled={isConnecting}
-        className="w-full"
+        className="w-full cursor-pointer"
       >
         {isConnecting ? "Connecting…" : "Connect"}
       </Button>
