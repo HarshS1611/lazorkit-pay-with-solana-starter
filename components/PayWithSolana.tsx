@@ -8,43 +8,72 @@ import {
   PublicKey,
   LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export function PayWithSolana() {
   const { signAndSendTransaction, smartWalletPubkey } = useWallet();
+  const [loading, setLoading] = useState(false);
 
   const pay = async () => {
-    if (!smartWalletPubkey) return;
+    if (!smartWalletPubkey) {
+      toast.error("Connect your wallet first");
+      return;
+    }
 
-    const destination = new PublicKey(
-      "RECIPIENT_DEVNET_ADDRESS"
-    );
+    try {
+      setLoading(true);
 
-    const instruction = SystemProgram.transfer({
-      fromPubkey: smartWalletPubkey,
-      toPubkey: destination,
-      lamports: 0.1 * LAMPORTS_PER_SOL,
-    });
+      const destination = new PublicKey(
+        "B7Lz5onmZnP1VZqtHJ7PDRW4wqt4E9TF9sVxLYgQAPWa"
+      );
 
-    const signature = await signAndSendTransaction({
-      instructions: [instruction],
-      transactionOptions: {
-        feeToken: "USDC",
-      },
-    });
+      const instruction = SystemProgram.transfer({
+        fromPubkey: smartWalletPubkey,
+        toPubkey: destination,
+        lamports: 0.1 * LAMPORTS_PER_SOL,
+      });
 
-    alert(`Transaction sent: ${signature}`);
+      const sig = await signAndSendTransaction({
+        instructions: [instruction],
+        transactionOptions: {
+          feeToken: "USDC",
+        },
+      });
+
+      toast.success("Transaction sent");
+      console.log("Transaction signature:", sig);
+    } catch (err: any) {
+      if (
+        err?.message?.includes("WebAuthn") ||
+        err?.message?.includes("Signing failed")
+      ) {
+        toast.error(
+          "Passkey signing blocked. Use localhost or valid HTTPS."
+        );
+      } else {
+        toast.error("Transaction failed");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Card className="p-6 max-w-sm space-y-4">
+    <Card className="w-full max-w-md p-4 space-y-3">
       <h2 className="text-lg font-semibold">
-        Pay with Solana
+        Gasless Transaction
       </h2>
       <p className="text-sm text-muted-foreground">
-        Gasless transaction sponsored by Lazorkit.
+        Fees are sponsored by Lazorkit paymaster.
       </p>
-      <Button onClick={pay} className="w-full">
-        Send 0.1 SOL
+
+      <Button
+        onClick={pay}
+        disabled={loading}
+        className="w-full"
+      >
+        {loading ? "Processing…" : "Send 0.1 SOL"}
       </Button>
     </Card>
   );

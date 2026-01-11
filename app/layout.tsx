@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import "./globals.css";
 import { LazorkitProviderWrapper } from "@/providers/LazorKitProvider";
 
@@ -12,6 +13,8 @@ export default function RootLayout({
         <LazorkitProviderWrapper>
           {children}
         </LazorkitProviderWrapper>
+        <Toaster position="top-right" />
+
       </body>
     </html>
   );
